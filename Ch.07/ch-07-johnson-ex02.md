@@ -20,3 +20,24 @@ Hints: 1) the R gsub function is for changing strings.
            expressions, \2 \1 will help.  I'll show you 
            what I mean if you get to that point.
 
+######### One Response #######################
+# Function to reformat a string vector: 
+# 1) swaping the sequence of the first two pieces of information;
+# 2) captilize the first letter of the first two pieces of info;
+# 3) reformat the date, from YYYY-MM-DD to YYYYMMDD
+
+rename <- function(old_string){
+  os <- old_string
+  # capatilize the first word
+  ns <- paste0(toupper(substr(os, 1, 1)), substr(os, 2, nchar(os))) 
+  # swap sequence of the first two pieces of information and capitilize the state name 
+  ns <- gsub("kansas-", "", ns, fixed=TRUE)
+  ns <- paste0("Kansas-", ns)
+  # reformat date 
+  # function to reformat date: extract the last ten character, remove the "-", then replace  
+  f <- function(x){
+    y <- sub(substr(x, nchar(x) - 9, nchar(x)), gsub("[[:punct:]]", "", substr(x, nchar(x) - 9, nchar(x))), x)
+  }
+  ns <- lapply(ns, f)
+  return(as.character(ns))
+}
